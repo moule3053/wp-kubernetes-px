@@ -3,6 +3,18 @@
 #metadata:
 #  name: mysql
 #---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mysql-pv-claim
+spec:
+  storageClassName: portworx-sc
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 250Gi
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -53,5 +65,5 @@ spec:
       volumes:
         - name: mysql-volume
           persistentVolumeClaim:
-            claimName: mysql-pvc-01-00
+            claimName: mysql-pv-claim
 
