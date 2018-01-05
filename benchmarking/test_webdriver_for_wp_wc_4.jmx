@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="3.2" jmeter="3.3 r1808647">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <intProp name="LoopController.loops">-1</intProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1514035793000</longProp>
+        <longProp name="ThreadGroup.end_time">1514035793000</longProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">300</stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <com.blazemeter.jmeter.webdriver.phantomjs.PhantomJSDriverConfig guiclass="com.blazemeter.jmeter.webdriver.phantomjs.PhantomJSDriverConfigGui" testclass="com.blazemeter.jmeter.webdriver.phantomjs.PhantomJSDriverConfig" testname="bzm - PhantomJS Driver Config" enabled="true">
+          <stringProp name="WebDriverConfig.proxy_type">SYSTEM</stringProp>
+          <stringProp name="WebDriverConfig.proxy_pac_url"></stringProp>
+          <stringProp name="WebDriverConfig.http_host"></stringProp>
+          <intProp name="WebDriverConfig.http_port">8080</intProp>
+          <boolProp name="WebDriverConfig.use_http_for_all_protocols">true</boolProp>
+          <stringProp name="WebDriverConfig.https_host"></stringProp>
+          <intProp name="WebDriverConfig.https_port">8080</intProp>
+          <stringProp name="WebDriverConfig.ftp_host"></stringProp>
+          <intProp name="WebDriverConfig.ftp_port">8080</intProp>
+          <stringProp name="WebDriverConfig.socks_host"></stringProp>
+          <intProp name="WebDriverConfig.socks_port">8080</intProp>
+          <stringProp name="WebDriverConfig.no_proxy">localhost</stringProp>
+          <boolProp name="WebDriverConfig.maximize_browser">true</boolProp>
+          <boolProp name="WebDriverConfig.reset_per_iteration">false</boolProp>
+          <boolProp name="WebDriverConfig.dev_mode">false</boolProp>
+          <stringProp name="PhantomJSDriverConfig.phantomjs_path">/usr/local/bin/phantomjs</stringProp>
+          <stringProp name="PhantomJSDriverConfig.phantomjs_cli_args">--web-security=false,--ignore-ssl-errors=true</stringProp>
+          <stringProp name="PhantomJSDriverConfig.phantomjs_ghostdriver_cli_args"></stringProp>
+        </com.blazemeter.jmeter.webdriver.phantomjs.PhantomJSDriverConfig>
+        <hashTree/>
+        <com.googlecode.jmeter.plugins.webdriver.sampler.WebDriverSampler guiclass="com.googlecode.jmeter.plugins.webdriver.sampler.gui.WebDriverSamplerGui" testclass="com.googlecode.jmeter.plugins.webdriver.sampler.WebDriverSampler" testname="jp@gc - WebDriver Sampler" enabled="true">
+          <stringProp name="WebDriverSampler.script">var pkg = JavaImporter(org.openqa.selenium, org.openqa.selenium.support.ui);
+var support_ui = JavaImporter(org.openqa.selenium.support.ui.WebDriverWait); //WebDriver classes
+var wait = new pkg.WebDriverWait(WDS.browser, 1000);
+var url = &apos;http://35.198.166.184&apos;;
+
+WDS.sampleResult.sampleStart(); //captures sampler&apos;s start time
+WDS.sampleResult.getLatency();
+WDS.log.info(&quot;Sample started&quot;);
+
+WDS.browser.get(url); //opens website specified in &apos;http://35.198.133.209&apos;
+
+var products = [&apos;beanie&apos;, &apos;belt&apos;, &apos;cap&apos;, &apos;sunglasses&apos;, &apos;hoodie-with-logo&apos;, &apos;hoodie-with-pocket&apos;, &apos;hoodie-with-zipper&apos;, &apos;hoodie&apos;, &apos;long-sleeve-tee&apos;, &apos;polo&apos;, &apos;tshirt&apos;, &apos;vneck-tshirt&apos;];
+
+var product = products[Math.floor(Math.random() * products.length)];
+WDS.log.info(product);
+
+var firstNames = [&apos;Sara&apos;, &apos;Maria&apos;, &apos;Juicy&apos;, &apos;Meron&apos;,&apos;Christmas&apos;,&apos;Vanessa&apos;];
+var lastNames = [&apos;Michaels&apos;, &apos;Jordan&apos;, &apos;Clinton&apos;, &apos;Blunt&apos;, &apos;Harvey&apos;, &apos;Muller&apos;, &apos;Redfern&apos;];
+
+WDS.browser.get(url + &apos;/product/&apos; + product);
+wait.until(pkg.ExpectedConditions.presenceOfElementLocated(pkg.By.cssSelector(&apos;h1.product_title.entry-title&apos;)));
+var button = WDS.browser.findElement(pkg.By.name(&apos;add-to-cart&apos;));
+button.click();
+wait.until(pkg.ExpectedConditions.presenceOfElementLocated(pkg.By.cssSelector(&apos;a.button.wc-forward&apos;)))
+
+
+WDS.browser.get(url + &apos;/checkout&apos;);
+wait.until(pkg.ExpectedConditions.presenceOfElementLocated(pkg.By.cssSelector(&apos;h1.entry-title&apos;)))
+
+var firstNameField = WDS.browser.findElement(pkg.By.id(&apos;billing_first_name&apos;));
+firstNameField.click();
+firstNameField.sendKeys([firstNames[Math.floor(Math.random() * firstNames.length)]]);
+
+var lastNameField = WDS.browser.findElement(pkg.By.id(&apos;billing_last_name&apos;));
+lastNameField.click();
+lastNameField.sendKeys([lastNames[Math.floor(Math.random() * lastNames.length)]]);
+
+var adressField = WDS.browser.findElement(pkg.By.id(&apos;billing_address_1&apos;));
+adressField.click();
+adressField.sendKeys([&apos;Frankfurter Allee 272&apos;]);
+
+var postcodeField = WDS.browser.findElement(pkg.By.id(&apos;billing_postcode&apos;));
+postcodeField.click();
+postcodeField.sendKeys([&apos;10367&apos;]);
+
+var cityField = WDS.browser.findElement(pkg.By.id(&apos;billing_city&apos;));
+cityField.click();
+cityField.sendKeys([&apos;Berlin&apos;]);
+
+var cityField = WDS.browser.findElement(pkg.By.id(&apos;billing_phone&apos;));
+cityField.click();
+cityField.sendKeys([&apos;015774046205&apos;]);
+
+var emailField = WDS.browser.findElement(pkg.By.id(&apos;billing_email&apos;));
+emailField.click();
+emailField.sendKeys([&apos;buta.michaels@gmail.com&apos;]);
+
+var button = WDS.browser.findElement(pkg.By.name(&apos;woocommerce_checkout_place_order&apos;));
+button.click();
+wait.until(pkg.ExpectedConditions.presenceOfElementLocated(pkg.By.cssSelector(&apos;h1.entry-title&apos;)))
+
+WDS.sampleResult.sampleEnd();</stringProp>
+          <stringProp name="WebDriverSampler.parameters"></stringProp>
+          <stringProp name="WebDriverSampler.language">javascript</stringProp>
+        </com.googlecode.jmeter.plugins.webdriver.sampler.WebDriverSampler>
+        <hashTree/>
+        <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+    <WorkBench guiclass="WorkBenchGui" testclass="WorkBench" testname="WorkBench" enabled="true">
+      <boolProp name="WorkBench.save">true</boolProp>
+    </WorkBench>
+    <hashTree/>
+  </hashTree>
+</jmeterTestPlan>
