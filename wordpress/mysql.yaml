@@ -1,0 +1,57 @@
+#apiVersion: v1
+#kind: Namespace
+#metadata:
+#  name: mysql
+#---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+#  namespace: mysql
+  labels:
+    app: mysql
+spec:
+  ports:
+  - port: 3306
+    name: mysql
+  clusterIP: None
+  selector:
+    app: mysql
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysql
+#  namespace: mysql
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: P4$$W0RDD
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-volume
+          mountPath: /var/lib/mysql
+#        resources:
+#          requests:
+#            memory: "2048Mi"
+#            cpu: "250m"
+#          limits:
+#            memory: "2048Mi"
+#            cpu: "250m"
+      volumes:
+        - name: mysql-volume
+          persistentVolumeClaim:
+            claimName: mysql-pvc-01-00
+
