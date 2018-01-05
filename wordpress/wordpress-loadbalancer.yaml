@@ -1,14 +1,8 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: wordpress-site
-spec:
-  ports:
-    - port: 80
-  selector:
-    app: wordpress
-  type: LoadBalancer
----
+#---
+#apiVersion: v1
+#kind: Namespace
+#metadata:
+#  name: wordpress
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -22,37 +16,55 @@ spec:
       storage: 250Gi
 ---
 apiVersion: v1
-kind: ReplicationController
+kind: Service
 metadata:
-  name: wordpress-rc
+  name: wordpress
+#  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  ports:
+  - port: 80
+    name: wordpress
+  selector:
+    app: wordpress
+  type: LoadBalancer
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wordpress
+#  namespace: wordpress
 spec:
   replicas: 1
-  selector: 
-    app: wordpress
   template:
     metadata:
-      name: wordpress-rc
       labels:
         app: wordpress
     spec:
-      volumes:
-      - name: wordpress-pv-storage
-        persistentVolumeClaim:
-          claimName: wordpress-pv-claim
       containers:
       - name: wordpress
         image: wordpress:latest
         env:
-        - name: WORDPRESS_DB_HOST
-          value: wordpress-mariadb
-        - name: WORDPRESS_DB_USER
-          value: wp-kube-usr
+          # Use secret in real usage
         - name: WORDPRESS_DB_PASSWORD
-          value: q1w2e3r4t5
-        - name: WORDPRESS_DB_NAME
-          value: wp-kube-db
+          value: P4$$W0RDD
+        - name: WORDPRESS_DB_HOST
+          value: mysql
         ports:
         - containerPort: 80
+          name: wordpress
         volumeMounts:
-        - mountPath: "/var/www/html"
-          name: wordpress-pv-storage
+        - name: wordpress-volume-01
+          mountPath: /var/www/html
+#        resources:
+#          requests:
+#            memory: "2048Mi"
+#            cpu: "250m"
+#          limits:
+#            memory: "2048Mi"
+#            cpu: "250m"
+      volumes:
+        - name: wordpress-volume-01
+          persistentVolumeClaim:
+            claimName: wordpress-pvc-01-00
